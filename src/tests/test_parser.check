@@ -1,0 +1,229 @@
+#test parser
+
+/*
+int parse_file(Data* data, const char* file_name)
+*/
+/*
+tests/test_obj/regular.obj - mini obj file
+*/
+ret = parse_file(&data, "tests/test_obj/regular.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 12);
+ck_assert_double_eq(data.vertexes[0], -0.068597);
+ck_assert_double_eq(data.vertexes[1], 2.260834);
+ck_assert_double_eq(data.vertexes[2], 0.049750);
+ck_assert_double_eq(data.vertexes[3], -0.068350);
+ck_assert_double_eq(data.vertexes[4], 2.260834);
+ck_assert_double_eq(data.vertexes[5], 0.054760);
+ck_assert_double_eq(data.vertexes[6], -0.043352);
+ck_assert_double_eq(data.vertexes[7], 2.260834);
+ck_assert_double_eq(data.vertexes[8], 0.024505);
+ck_assert_double_eq(data.vertexes[9], -0.038342);
+ck_assert_double_eq(data.vertexes[10], 2.260834);
+ck_assert_double_eq(data.vertexes[11], 0.024751);
+ck_assert_double_eq(data.vertexes[12], -0.063479);
+ck_assert_double_eq(data.vertexes[13], 2.260834);
+ck_assert_double_eq(data.vertexes[14], 0.049246);
+ck_assert_double_eq(data.vertexes[15], -0.062496);
+ck_assert_double_eq(data.vertexes[16], 2.260834);
+ck_assert_double_eq(data.vertexes[17], 0.054183);
+ck_assert_double_eq(data.vertexes[18], -0.058793);
+ck_assert_double_eq(data.vertexes[19], 2.260834);
+ck_assert_double_eq(data.vertexes[20], 0.047825);
+ck_assert_double_eq(data.vertexes[21], -0.056867);
+ck_assert_double_eq(data.vertexes[22], 2.260834);
+ck_assert_double_eq(data.vertexes[23], 0.052476);
+ck_assert_double_eq(data.vertexes[24], -0.054475);
+ck_assert_double_eq(data.vertexes[25], 2.260834);
+ck_assert_double_eq(data.vertexes[26], 0.045517);
+ck_assert_double_eq(data.vertexes[27], -0.051679);
+ck_assert_double_eq(data.vertexes[28], 2.260834);
+ck_assert_double_eq(data.vertexes[29], 0.049702);
+//f 1/25761/6645 2/25936/6645 3/24005/6432 4/24003/6432
+//f 5/25755/6454 6/25967/6458 8/25775/6457 7/24374/6453 9/24371/6422
+//f 10/25893/6750 1/25892/6749 9/25822/6724
+ck_assert_int_eq(data.edges[0], 0);
+ck_assert_int_eq(data.edges[1], 1);
+ck_assert_int_eq(data.edges[2], 0);
+ck_assert_int_eq(data.edges[3], 3);
+ck_assert_int_eq(data.edges[4], 0);
+ck_assert_int_eq(data.edges[5], 8);
+ck_assert_int_eq(data.edges[6], 0);
+ck_assert_int_eq(data.edges[7], 9);
+ck_assert_int_eq(data.edges[8], 1);
+ck_assert_int_eq(data.edges[9], 2);
+ck_assert_int_eq(data.edges[10], 2);
+ck_assert_int_eq(data.edges[11], 3);
+ck_assert_int_eq(data.edges[12], 4);
+ck_assert_int_eq(data.edges[13], 5);
+ck_assert_int_eq(data.edges[14], 4);
+ck_assert_int_eq(data.edges[15], 8);
+ck_assert_int_eq(data.edges[16], 5);
+ck_assert_int_eq(data.edges[17], 7);
+ck_assert_int_eq(data.edges[18], 6);
+ck_assert_int_eq(data.edges[19], 7);
+ck_assert_int_eq(data.edges[20], 6);
+ck_assert_int_eq(data.edges[21], 8);
+ck_assert_int_eq(data.edges[22], 8);
+ck_assert_int_eq(data.edges[23], 9);
+clear_data(&data);
+
+/*
+tests/test_obj/only_v.obj - only v instances
+*/
+ret = parse_file(&data, "tests/test_obj/only_v.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 4785);
+ck_assert_int_eq(data.edge_n, 0);
+ck_assert_int_eq(data.edges == NULL, 1);
+ck_assert_double_eq(data.vertexes[0], -0.068597);
+ck_assert_double_eq(data.vertexes[1], 2.260834);
+ck_assert_double_eq(data.vertexes[2], 0.049750);
+ck_assert_double_eq(data.vertexes[14352], -0.548627);
+ck_assert_double_eq(data.vertexes[14353], 2.592486);
+ck_assert_double_eq(data.vertexes[14354], -0.078518);
+clear_data(&data);
+
+/*
+tests/test_obj/only_f.obj - only f instances
+*/
+ret = parse_file(&data, "tests/test_obj/only_f.obj");
+ck_assert_int_eq(ret, E_PARSE);
+clear_data(&data);
+
+/*
+tests/test_obj/corrupted_v_2.obj - corrupted missing one axis coordinate
+*/
+ret = parse_file(&data, "tests/test_obj/corrupted_v_2.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 4781);
+ck_assert_int_eq(data.edge_n, 0);
+clear_data(&data);
+
+/*
+tests/test_obj/corrupted_v_1.obj - corrupted incorrect one v line
+*/
+ret = parse_file(&data, "tests/test_obj/corrupted_v_1.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 4782);
+ck_assert_int_eq(data.edge_n, 0);
+clear_data(&data);
+
+/*
+tests/test_obj/corrupted_f_1.obj - corrupted incorrect one f line
+*/
+ret = parse_file(&data, "tests/test_obj/corrupted_f_1.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 7);
+clear_data(&data);
+
+/*
+tests/test_obj/incorrect_indexes.obj - empty one f line
+*/
+ret = parse_file(&data, "tests/test_obj/incorrect_indexes.obj");
+ck_assert_int_eq(ret, E_VAL);
+clear_data(&data);
+
+/*
+tests/test_obj/empty_f.obj - empty one f line
+*/
+ret = parse_file(&data, "tests/test_obj/empty_f.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 4);
+clear_data(&data);
+
+/*
+tests/test_obj/empty_v.obj - empty one v line
+*/
+ret = parse_file(&data, "tests/test_obj/empty_v.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 9);
+ck_assert_int_eq(data.edge_n, 3);
+clear_data(&data);
+
+/*
+tests/test_obj/MAC10_2021.obj - example obj
+*/
+ret = parse_file(&data, "tests/test_obj/MAC10_2021.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 30106);
+//ck_assert_int_eq(data.edge_n, 117794);
+ck_assert_int_eq(data.edge_n, 58837);
+ck_assert_double_eq(data.vertexes[0], -0.068597);
+ck_assert_double_eq(data.vertexes[1], 2.260834);
+ck_assert_double_eq(data.vertexes[2], 0.049750);
+ck_assert_double_eq(data.vertexes[90315], -0.190212);
+ck_assert_double_eq(data.vertexes[90316], 1.452225);
+ck_assert_double_eq(data.vertexes[90317], -0.004935);
+ck_assert_int_eq(data.edges[0], 0);
+ck_assert_int_eq(data.edges[1], 1);
+ck_assert_int_eq(data.edges[117672], 30104);
+ck_assert_int_eq(data.edges[117673], 30105);
+clear_data(&data);
+
+/*
+no file existing
+*/
+ret = parse_file(&data, "tests/test_obj/nope.obj");
+ck_assert_int_eq(ret, E_FILE);
+clear_data(&data);
+
+/*
+empty obj file
+*/
+ret = parse_file(&data, "tests/test_obj/empty.obj");
+ck_assert_int_eq(ret, E_PARSE);
+clear_data(&data);
+
+/*
+data == NULL
+*/
+ret = parse_file(NULL, "tests/test_obj/regular.obj");
+ck_assert_int_eq(ret, E_ARG);
+clear_data(&data);
+
+/*
+file_name == NULL
+*/
+ret = parse_file(&data, NULL);
+ck_assert_int_eq(ret, E_ARG);
+clear_data(&data);
+
+/*
+tests/test_obj/negative_index.obj - negative indexes in f
+*/
+ret = parse_file(&data, "tests/test_obj/negative_index.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 9);
+ck_assert_int_eq(data.edges[0], 0);
+ck_assert_int_eq(data.edges[1], 1);
+ck_assert_int_eq(data.edges[16], 6);
+ck_assert_int_eq(data.edges[17], 9);
+clear_data(&data);
+/*
+ck_assert_int_eq(data.edges[], );
+ck_assert_int_eq(data.edges[], );
+ck_assert_int_eq(data.edges[], );
+ck_assert_int_eq(data.edges[], );
+*/
+
+/*ck_assert_double_eq(data.vertexes[], );
+ck_assert_double_eq(data.vertexes[], );
+ck_assert_double_eq(data.vertexes[], );
+ck_assert_double_eq(data.vertexes[], );
+ck_assert_double_eq(data.vertexes[], );
+ck_assert_double_eq(data.vertexes[], );
+ck_assert_double_eq(data.vertexes[], );*/
+
+/*
+tests/test_obj/zero_index.obj - zero index in f
+*/
+ret = parse_file(&data, "tests/test_obj/zero_index.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 1);
+clear_data(&data);

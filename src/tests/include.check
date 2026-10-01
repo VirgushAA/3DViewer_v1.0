@@ -1,0 +1,11 @@
+#include "modules/obj_parser.h"
+#include "modules/data_mapper.h"
+
+#define EPS 1e-08
+
+//#define CK_DEFAULT_TIMEOUT 1000
+//#define CK_FORK no
+//#define CK_TIMEOUT_MULTIPLIER 100
+
+Data data = { 0, NULL, 0, NULL, 0.0 };
+int ret = 0;

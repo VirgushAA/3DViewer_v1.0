@@ -1,0 +1,457 @@
+#test mapper
+
+/*
+int transform_data(Data* data, Axis axis, Action action, double value);
+*/
+
+/*
+Passing NULL data
+*/
+ret = transform_data(NULL, Y, SHIFT, +10.0);
+ck_assert_int_eq(ret, E_ARG);
+
+/*
+Passing incorrect set of Action and Axis. Doesn't do anything to data and returns E_OK.
+*/
+ret = parse_file(&data, "tests/test_obj/regular.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 12);
+ret = transform_data(&data, ALL, ROTATE, +10.0);
+ck_assert_int_eq(ret, E_OK);
+clear_data(&data);
+
+/*
+Passing incorrect Action
+*/
+ret = parse_file(&data, "tests/test_obj/regular.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 12);
+ret = transform_data(&data, Y, 10, +10.0);
+ck_assert_int_eq(ret, E_ARG);
+clear_data(&data);
+
+/*
+Consequence of Y, X, Z shifting by +10.0, -0.002, +900.213 accordingly.
+*/
+ret = parse_file(&data, "tests/test_obj/regular.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 12);
+ret = transform_data(&data, Y, SHIFT, +10.0);
+ck_assert_int_eq(ret, E_OK);
+ck_assert_double_eq_tol(data.vertexes[0], -0.068597, EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 0.049750, EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.068350, EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 0.054760, EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.043352, EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 0.024505, EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.038342, EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 0.024751, EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.063479, EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 0.049246, EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.062496, EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 0.054183, EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.058793, EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 0.047825, EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.056867, EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 0.052476, EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.054475, EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 0.045517, EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.051679, EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 0.049702, EPS);
+
+ret = transform_data(&data, X, SHIFT, -0.002);
+ck_assert_int_eq(ret, E_OK);
+ck_assert_double_eq_tol(data.vertexes[0], -0.070597, EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 0.049750, EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.070350, EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 0.054760, EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.045352, EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 0.024505, EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.040342, EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 0.024751, EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.065479, EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 0.049246, EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.064496, EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 0.054183, EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.060793, EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 0.047825, EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.058867, EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 0.052476, EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.056475, EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 0.045517, EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.053679, EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 0.049702, EPS);
+
+ret = transform_data(&data, Z, SHIFT, 900.213);
+ck_assert_int_eq(ret, E_OK);
+ck_assert_double_eq_tol(data.vertexes[0], -0.070597, EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 0.049750 + 900.213, EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.070350, EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 0.054760 + 900.213, EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.045352, EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 0.024505 + 900.213, EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.040342, EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 0.024751 + 900.213, EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.065479, EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 0.049246 + 900.213, EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.064496, EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 0.054183 + 900.213, EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.060793, EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 0.047825 + 900.213, EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.058867, EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 0.052476 + 900.213, EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.056475, EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 0.045517 + 900.213, EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.053679, EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 12.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 0.049702 + 900.213, EPS);
+clear_data(&data);
+
+/*
+Change scale by 27
+*/
+ret = parse_file(&data, "tests/test_obj/regular.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 12);
+ret = transform_data(&data, ALL, SCALE, 27.0);
+ck_assert_int_eq(ret, E_OK);
+ck_assert_double_eq_tol(data.vertexes[0], -0.068597 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 2.260834 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 0.049750 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.068350 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 2.260834 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 0.054760 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.043352 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 2.260834 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 0.024505 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.038342 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 2.260834 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 0.024751 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.063479 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 2.260834 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 0.049246 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.062496 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 2.260834 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 0.054183 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.058793 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 2.260834 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 0.047825 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.056867 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 2.260834 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 0.052476 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.054475 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 2.260834 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 0.045517 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.051679 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 2.260834 * 27.0, EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 0.049702 * 27.0, EPS);
+
+/*
+Change scale by 1/27
+*/
+ret = transform_data(&data, ALL, SCALE, 1.0 / 27.0);
+ck_assert_int_eq(ret, E_OK);
+ck_assert_double_eq_tol(data.vertexes[0], -0.068597, EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 0.049750, EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.068350, EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 0.054760, EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.043352, EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 0.024505, EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.038342, EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 0.024751, EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.063479, EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 0.049246, EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.062496, EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 0.054183, EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.058793, EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 0.047825, EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.056867, EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 0.052476, EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.054475, EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 0.045517, EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.051679, EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 0.049702, EPS);
+
+/*
+Change scale by -5.27
+*/
+ret = transform_data(&data, ALL, SCALE, -5.27);
+ck_assert_int_eq(ret, E_OK);
+ck_assert_double_eq_tol(data.vertexes[0], -0.068597 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 2.260834 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 0.049750 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.068350 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 2.260834 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 0.054760 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.043352 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 2.260834 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 0.024505 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.038342 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 2.260834 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 0.024751 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.063479 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 2.260834 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 0.049246 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.062496 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 2.260834 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 0.054183 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.058793 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 2.260834 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 0.047825 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.056867 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 2.260834 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 0.052476 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.054475 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 2.260834 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 0.045517 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.051679 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 2.260834 * -5.27, EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 0.049702 * -5.27, EPS);
+
+
+/*
+Change scale by 0.002
+*/
+ret = transform_data(&data, ALL, SCALE, 0.002);
+ck_assert_int_eq(ret, E_OK);
+ck_assert_double_eq_tol(data.vertexes[0], -0.068597 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 0.049750 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.068350 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 0.054760 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.043352 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 0.024505 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.038342 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 0.024751 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.063479 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 0.049246 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.062496 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 0.054183 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.058793 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 0.047825 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.056867 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 0.052476 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.054475 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 0.045517 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.051679 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 0.049702 * -5.27 * 0.002, EPS);
+
+/*
+Change scale by 0
+*/
+ret = transform_data(&data, ALL, SCALE, 0.0);
+ck_assert_int_eq(ret, E_OK);
+ck_assert_double_eq_tol(data.vertexes[0], -0.068597 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 0.049750 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.068350 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 0.054760 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.043352 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 0.024505 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.038342 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 0.024751 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.063479 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 0.049246 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.062496 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 0.054183 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.058793 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 0.047825 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.056867 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 0.052476 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.054475 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 0.045517 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.051679 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 2.260834 * -5.27 * 0.002, EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 0.049702 * -5.27 * 0.002, EPS);
+clear_data(&data);
+
+/*
+Rotate by 1.25 around X
+*/
+ret = parse_file(&data, "tests/test_obj/regular.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 12);
+ret = transform_data(&data, X, ROTATE, 1.25);
+ck_assert_int_eq(ret, E_OK);
+/*
+      data->vertexes[index * 3 + 1] = y * cos(value) - z * sin(value);
+      data->vertexes[index * 3 + 2] = y * sin(value) + z * cos(value);
+*/
+ck_assert_double_eq_tol(data.vertexes[0], -0.068597, EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 2.260834 * cos(1.25) - 0.049750 * sin(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 2.260834 * sin(1.25) + 0.049750 * cos(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.068350, EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 2.260834 * cos(1.25) - 0.054760 * sin(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 2.260834 * sin(1.25) + 0.054760 * cos(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.043352, EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 2.260834 * cos(1.25) - 0.024505 * sin(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 2.260834 * sin(1.25) + 0.024505 * cos(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.038342, EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 2.260834 * cos(1.25) - 0.024751 * sin(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 2.260834 * sin(1.25) + 0.024751 * cos(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.063479, EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 2.260834 * cos(1.25) - 0.049246 * sin(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 2.260834 * sin(1.25) + 0.049246 * cos(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.062496, EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 2.260834 * cos(1.25) - 0.054183 * sin(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 2.260834 * sin(1.25) + 0.054183 * cos(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.058793, EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 2.260834 * cos(1.25) - 0.047825 * sin(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 2.260834 * sin(1.25) + 0.047825 * cos(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.056867, EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 2.260834 * cos(1.25) - 0.052476 * sin(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 2.260834 * sin(1.25) + 0.052476 * cos(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.054475, EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 2.260834 * cos(1.25) - 0.045517 * sin(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 2.260834 * sin(1.25) + 0.045517 * cos(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.051679, EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 2.260834 * cos(1.25) - 0.049702 * sin(1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 2.260834 * sin(1.25) + 0.049702 * cos(1.25), EPS);
+clear_data(&data);
+
+/*
+Rotate by -1.25 around Y
+*/
+ret = parse_file(&data, "tests/test_obj/regular.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 12);
+ret = transform_data(&data, Y, ROTATE, -1.25);
+ck_assert_int_eq(ret, E_OK);
+/*
+      data->vertexes[index * 3] = x * cos(value) + z * sin(value);
+      data->vertexes[index * 3 + 2] = -x * sin(value) + z * cos(value);
+*/
+ck_assert_double_eq_tol(data.vertexes[0], -0.068597 * cos(-1.25) + 0.049750 * sin(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 0.068597 * sin(-1.25) + 0.049750 * cos(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.068350 * cos(-1.25) + 0.054760 * sin(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 0.068350 * sin(-1.25) + 0.054760 * cos(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.043352 * cos(-1.25) + 0.024505 * sin(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 0.043352 * sin(-1.25) + 0.024505 * cos(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.038342 * cos(-1.25) + 0.024751 * sin(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 0.038342 * sin(-1.25) + 0.024751 * cos(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.063479 * cos(-1.25) + 0.049246 * sin(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 0.063479 * sin(-1.25) + 0.049246 * cos(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.062496 * cos(-1.25) + 0.054183 * sin(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 0.062496 * sin(-1.25) + 0.054183 * cos(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.058793 * cos(-1.25) + 0.047825 * sin(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 0.058793 * sin(-1.25) + 0.047825 * cos(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.056867 * cos(-1.25) + 0.052476 * sin(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 0.056867 * sin(-1.25) + 0.052476 * cos(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.054475 * cos(-1.25) + 0.045517 * sin(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 0.054475 * sin(-1.25) + 0.045517 * cos(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.051679 * cos(-1.25) + 0.049702 * sin(-1.25), EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 0.051679 * sin(-1.25) + 0.049702 * cos(-1.25), EPS);
+clear_data(&data);
+
+/*
+Rotate by 0 around Z
+*/
+ret = parse_file(&data, "tests/test_obj/regular.obj");
+ck_assert_int_eq(ret, E_OK);
+ck_assert_int_eq(data.vertex_n, 10);
+ck_assert_int_eq(data.edge_n, 12);
+ret = transform_data(&data, Z, ROTATE, 0);
+ck_assert_int_eq(ret, E_OK);
+ck_assert_double_eq_tol(data.vertexes[0], -0.068597, EPS);
+ck_assert_double_eq_tol(data.vertexes[1], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[2], 0.049750, EPS);
+ck_assert_double_eq_tol(data.vertexes[3], -0.068350, EPS);
+ck_assert_double_eq_tol(data.vertexes[4], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[5], 0.054760, EPS);
+ck_assert_double_eq_tol(data.vertexes[6], -0.043352, EPS);
+ck_assert_double_eq_tol(data.vertexes[7], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[8], 0.024505, EPS);
+ck_assert_double_eq_tol(data.vertexes[9], -0.038342, EPS);
+ck_assert_double_eq_tol(data.vertexes[10], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[11], 0.024751, EPS);
+ck_assert_double_eq_tol(data.vertexes[12], -0.063479, EPS);
+ck_assert_double_eq_tol(data.vertexes[13], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[14], 0.049246, EPS);
+ck_assert_double_eq_tol(data.vertexes[15], -0.062496, EPS);
+ck_assert_double_eq_tol(data.vertexes[16], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[17], 0.054183, EPS);
+ck_assert_double_eq_tol(data.vertexes[18], -0.058793, EPS);
+ck_assert_double_eq_tol(data.vertexes[19], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[20], 0.047825, EPS);
+ck_assert_double_eq_tol(data.vertexes[21], -0.056867, EPS);
+ck_assert_double_eq_tol(data.vertexes[22], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[23], 0.052476, EPS);
+ck_assert_double_eq_tol(data.vertexes[24], -0.054475, EPS);
+ck_assert_double_eq_tol(data.vertexes[25], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[26], 0.045517, EPS);
+ck_assert_double_eq_tol(data.vertexes[27], -0.051679, EPS);
+ck_assert_double_eq_tol(data.vertexes[28], 2.260834, EPS);
+ck_assert_double_eq_tol(data.vertexes[29], 0.049702, EPS);
+clear_data(&data);
